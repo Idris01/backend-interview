@@ -9,9 +9,6 @@ Following are the description of activites carried out to complete the project;
   This involve the creation of the database tables on an AWS cloud service. The tables created are `users` and `products` tables. For the
   `users` table, there
     - Primary partition key field namely `id`, it is a UUID field, this must be unique
-    - Secondary Sort key field namely `userName`.
-For the `products` table there is
-    - Primary partition key field namely `id`
 
 2. Create the Lambda function that serves as the backend for the application.
 
