@@ -6,8 +6,8 @@ DynamoDb, API Gateway
 ## Description
 Following are the description of activites carried out to complete the project;
 1. Create DynamoDb Table
-  This involve the creation of the database tables on an AWS cloud service. The tables created are `users` and `products` tables. For the
-  `users` table, there
+  This involve the creation of the database tables on an AWS cloud service. The tables created are `users` and `products` tables and each has:
+
     - Primary partition key field namely `id`, it is a UUID field, this must be unique
 
 2. Create the Lambda function that serves as the backend for the application.
