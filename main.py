@@ -48,14 +48,34 @@ def lambda_handler(event, context):
         except Exception as error:
             return generateResponse(400, dict(error=str(error)))
     
-    elif route_key == 'PATCH /upate-user/{id}':
+    elif route_key == 'PATCH /update-user/{id}':
         # update a given user
         try:
             data = json.loads(event.get('body'))
             item_key= event.get('pathParameters')['id']
-            response = users_table.update_item(Key={'id':item_key})
-            old_data = response.get('Attributes')
-            return generateResponse(202, old_data)
+            user_name = data.get('userName')
+            key_dict =  { 'id':f"{item_key}"}
+            attributes_values = {}
+            attributes_names = {}
+            update_expression = "SET"
+            for index, item in enumerate(list(data.items())):
+                this_name = f"#attrName{index}"
+                this_val = f":attrValue{index}"
+                attributes_names[this_name] = item[0]
+                attributes_values[this_val] = item[1]
+                update_expression += f" {this_name} = {this_val}" if update_expression == 'SET' else f", {this_name} = {this_val}"
+                
+            #return generateResponse(202, attributes_values) 
+            response = users_table.update_item(
+                Key=key_dict,
+                UpdateExpression=update_expression,
+                ExpressionAttributeNames=attributes_names,
+                ExpressionAttributeValues=attributes_values,
+                ReturnValues='ALL_OLD'
+                )
+            new_data = response.get('Attributes')
+            new_data.update(data)
+            return generateResponse(202, new_data)
         except Exception as error:
             return generateResponse(404, dict(error=str(error)))
             
